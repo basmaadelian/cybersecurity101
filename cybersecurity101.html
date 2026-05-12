@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cybersecurity 101 — Course Outline</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --bg2: #0f1217;
+    --bg3: #141820;
+    --border: #1e2530;
+    --accent: #00ff88;
+    --accent2: #00c8ff;
+    --accent3: #ff4d6d;
+    --accent4: #ffb800;
+    --text: #c8d0dc;
+    --text-dim: #5a6478;
+    --text-bright: #edf0f5;
+    --mono: 'Share Tech Mono', monospace;
+    --sans: 'Barlow', sans-serif;
+    --condensed: 'Barlow Condensed', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* SCANLINE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(0,255,136,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,200,255,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .hero-title {
+    font-family: var(--condensed);
+    font-size: clamp(64px, 10vw, 140px);
+    font-weight: 900;
+    line-height: 0.9;
+    color: var(--text-bright);
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.35s;
+  }
+
+  .hero-title span {
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-subtitle {
+    font-family: var(--condensed);
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.5s;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.65s;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .meta-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .meta-value {
+    font-family: var(--condensed);
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent2);
+    line-height: 1;
+  }
+
+  .meta-value small {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-left: 4px;
+  }
+
+  .hero-grid {
+    position: absolute;
+    top: 0; right: 0;
+    width: 45%;
+    height: 100%;
+    opacity: 0.03;
+    background-image:
+      linear-gradient(var(--accent) 1px, transparent 1px),
+      linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* SECTION WRAPPERS */
+  .section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 80px 60px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 48px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-number {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+  }
+
+  .section-title {
+    font-family: var(--condensed);
+    font-size: 36px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-bright);
+  }
+
+  .section-title .accent { color: var(--accent); }
+  .section-title .accent2 { color: var(--accent2); }
+
+  /* METHODOLOGY */
+  .methodology-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 40px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .methodology-block::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 20px; right: 24px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .methodology-block h3 {
+    font-family: var(--condensed);
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .methodology-block p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+    max-width: 900px;
+  }
+
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-bottom: 48px;
+  }
+
+  .pillar {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 32px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .pillar:hover { border-color: var(--accent2); }
+
+  .pillar-num {
+    font-family: var(--mono);
+    font-size: 48px;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .pillar h3 {
+    font-family: var(--condensed);
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-bright);
+    margin-bottom: 12px;
+  }
+
+  .pillar p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .pillar-tag {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+
+  .tag-green { color: var(--accent); border-color: var(--accent); }
+  .tag-blue { color: var(--accent2); border-color: var(--accent2); }
+  .tag-red { color: var(--accent3); border-color: var(--accent3); }
+
+  /* FLOW DIAGRAM — GRID CARD LAYOUT */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin: 48px 0;
+  }
+
+  .flow-step {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    padding: 28px 24px 24px;
+    position: relative;
+    transition: background 0.2s, border-top-color 0.2s;
+  }
+
+  .flow-step:nth-child(1) { border-top-color: var(--accent); }
+  .flow-step:nth-child(2) { border-top-color: var(--accent2); }
+  .flow-step:nth-child(3) { border-top-color: #a78bfa; }
+  .flow-step:nth-child(4) { border-top-color: var(--accent4); }
+  .flow-step:nth-child(5) { border-top-color: var(--accent3); }
+  .flow-step:nth-child(6) { border-top-color: var(--accent); }
+  .flow-step:nth-child(7) { border-top-color: var(--accent2); }
+  .flow-step:nth-child(8) { border-top-color: #34d399; }
+
+  .flow-step:hover { background: var(--bg2); }
+
+  .flow-step-num {
+    font-family: var(--mono);
+    font-size: 36px;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  .flow-step-name {
+    font-family: var(--condensed);
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+  }
+
+  .flow-step-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .flow-arrow { display: none; }
+
+  /* MODULES */
+  .modules-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .module {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .module:hover { border-color: rgba(0,255,136,0.2); }
+
+  .module-header {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    padding: 24px 32px;
+    cursor: pointer;
+    gap: 24px;
+    user-select: none;
+  }
+
+  .module-header:hover .module-title { color: var(--accent); }
+
+  .module-num {
+    font-family: var(--mono);
+    font-size: 28px;
+    color: var(--border);
+    line-height: 1;
+  }
+
+  .module-info {}
+
+  .module-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .module-title {
+    font-family: var(--condensed);
+    font-size: 22px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-bright);
+    transition: color 0.2s;
+  }
+
+  .module-stats {
+    display: flex;
+    gap: 24px;
+    text-align: right;
+  }
+
+  .module-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-val {
+    font-family: var(--condensed);
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--accent2);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .module-toggle {
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--text-dim);
+    transition: transform 0.3s, color 0.2s;
+  }
+
+  .module.open .module-toggle {
+    transform: rotate(45deg);
+    color: var(--accent);
+  }
+
+  .module-body {
+    display: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .module.open .module-body { display: block; }
+
+  .module-accent-bar {
+    height: 3px;
+    width: 100%;
+  }
+
+  /* SESSIONS */
+  .sessions-list {
+    padding: 0;
+  }
+
+  .session {
+    border-bottom: 1px solid var(--border);
+    padding: 28px 32px 28px 110px;
+    position: relative;
+    transition: background 0.15s;
+  }
+
+  .session:last-child { border-bottom: none; }
+  .session:hover { background: rgba(255,255,255,0.01); }
+
+  .session-num {
+    position: absolute;
+    left: 32px;
+    top: 28px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  .session-title {
+    font-family: var(--condensed);
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-bright);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .session-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 3px 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1px solid var(--accent3);
+    color: var(--accent3);
+    font-weight: 400;
+    flex-shrink: 0;
+  }
+
+  .session-badge.lab {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .session-badge.ad {
+    border-color: var(--accent4);
+    color: var(--accent4);
+  }
+
+  .session-topics {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 16px;
+  }
+
+  .session-topics li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .session-topics li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border);
+    font-family: var(--mono);
+  }
+
+  .session-hands-on {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: rgba(0,255,136,0.03);
+    border: 1px solid rgba(0,255,136,0.1);
+    border-left: 2px solid var(--accent);
+    padding: 10px 14px;
+    margin-top: 12px;
+  }
+
+  .hands-on-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .hands-on-text {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* TARGETS */
+  .targets-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3px;
+    margin-bottom: 48px;
+  }
+
+  .target-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .target-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle at bottom right, rgba(0,200,255,0.05), transparent 70%);
+  }
+
+  .target-type {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent2);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .target-name {
+    font-family: var(--condensed);
+    font-size: 28px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--text-bright);
+    margin-bottom: 20px;
+    line-height: 1;
+  }
+
+  .target-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .target-detail {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .detail-key {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    min-width: 90px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .detail-val {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* CERT PATHWAY */
+  .cert-pathway {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+
+  .cert-step {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+    flex: 1;
+    min-width: 180px;
+    position: relative;
+  }
+
+  .cert-step-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .cert-name {
+    font-family: var(--condensed);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--text-bright);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .cert-body {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .cert-level {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 3px 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .level-entry { background: rgba(0,255,136,0.08); color: var(--accent); }
+  .level-mid { background: rgba(0,200,255,0.08); color: var(--accent2); }
+  .level-adv { background: rgba(255,77,109,0.08); color: var(--accent3); }
+
+  /* TOOLS GRID */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 2px;
+  }
+
+  .tool-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    transition: color 0.15s, border-color 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tool-item:hover {
+    color: var(--accent);
+    border-color: rgba(0,255,136,0.2);
+  }
+
+  .tool-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+    opacity: 0.4;
+  }
+
+  /* PLATFORMS */
+  .platforms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 3px;
+  }
+
+  .platform-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+    transition: border-color 0.2s;
+  }
+
+  .platform-card:hover { border-color: var(--accent2); }
+
+  .platform-name {
+    font-family: var(--condensed);
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+  }
+
+  .platform-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 40px 60px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+  }
+
+  .footer-left {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  .footer-right {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  .footer-right span {
+    color: var(--accent);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MODULE COLOR ACCENTS */
+  .mod-1 .module-accent-bar { background: linear-gradient(90deg, var(--accent), transparent); }
+  .mod-2 .module-accent-bar { background: linear-gradient(90deg, var(--accent2), transparent); }
+  .mod-3 .module-accent-bar { background: linear-gradient(90deg, #a78bfa, transparent); }
+  .mod-4 .module-accent-bar { background: linear-gradient(90deg, var(--accent3), transparent); }
+  .mod-5 .module-accent-bar { background: linear-gradient(90deg, var(--accent4), transparent); }
+  .mod-6 .module-accent-bar { background: linear-gradient(90deg, var(--accent2), transparent); }
+  .mod-7 .module-accent-bar { background: linear-gradient(90deg, #34d399, transparent); }
+  .mod-8 .module-accent-bar { background: linear-gradient(90deg, var(--accent3), transparent); }
+
+  .mod-1 .module-num { color: rgba(0,255,136,0.15); }
+  .mod-2 .module-num { color: rgba(0,200,255,0.15); }
+  .mod-3 .module-num { color: rgba(167,139,250,0.15); }
+  .mod-4 .module-num { color: rgba(255,77,109,0.15); }
+  .mod-5 .module-num { color: rgba(255,184,0,0.15); }
+  .mod-6 .module-num { color: rgba(0,200,255,0.15); }
+  .mod-7 .module-num { color: rgba(52,211,153,0.15); }
+  .mod-8 .module-num { color: rgba(255,77,109,0.15); }
+
+  /* SCROLL */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+  @media (max-width: 900px) {
+    .hero { padding: 60px 24px; }
+    .section { padding: 60px 24px; }
+    .pillar-grid { grid-template-columns: 1fr; }
+    .targets-grid { grid-template-columns: 1fr; }
+    .module-header { grid-template-columns: 60px 1fr; }
+    .module-stats { display: none; }
+    .session { padding-left: 80px; }
+    .hero-grid { display: none; }
+    .footer { padding: 32px 24px; flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-tag">// CyberWise &mdash; Course Document v1.0 &mdash; 2025</div>
+  <h1 class="hero-title">
+    Cyber<span>Security</span>
+  </h1>
+  <div class="hero-subtitle">101 &mdash; Junior Web &amp; Network Penetration Tester</div>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span class="meta-label">Duration</span>
+      <span class="meta-value">100 <small>hours</small></span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Sessions</span>
+      <span class="meta-value">34 <small>sessions</small></span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Per Session</span>
+      <span class="meta-value">~3 <small>hours</small></span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Modules</span>
+      <span class="meta-value">8 <small>modules</small></span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Level</span>
+      <span class="meta-value" style="font-size:20px; padding-top:4px;">Beginner</span>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-number">// 01</span>
+    <h2 class="section-title">Course <span class="accent">Methodology</span></h2>
+  </div>
+
+  <div class="methodology-block" data-label="// Core Philosophy">
+    <h3>Anchor to Real Industry Standards</h3>
+    <p>This course is not built from intuition. Every topic, every session, and every hands-on task maps directly to what the industry's most respected entry-level certification bodies actually test and teach. The three primary references are OffSec PEN-200 (the course behind OSCP, the gold standard for practical penetration testing), INE's Penetration Testing Student path (PTSv2) leading to the eJPT v2 certification, and TCM Security's PJPT and PNPT paths. Every tool listed in this course appears in at least two of those three reference curricula. Tools were not added because they are interesting or new — they were added because a junior pentester will encounter them in job descriptions, in real engagements, and in the exams that get them hired.</p>
+  </div>
+
+  <div class="methodology-block" data-label="// Student Profile">
+    <h3>Fixed Target Student Profile</h3>
+    <p>The student profile is fixed: an absolute beginner with general IT literacy but no security background. This has three direct consequences. First, the course cannot open with exploitation — attacking without understanding how things work produces dangerous skill gaps. Second, the difficulty curve is deliberate and visible: each module assumes the previous one is complete. Third, the student needs to see themselves in the outcome, so the certification roadmap and capstone debrief exist to show that the destination is real and achievable.</p>
+  </div>
+
+  <div class="methodology-block" data-label="// Architecture">
+    <h3>Three-Pillar Sequence with a Simulation Block</h3>
+    <p>The course is built on three sequential pillars followed by a real-world simulation block. Fundamentals come first because network pentesting builds directly on what is just learned: ports, protocols, services, operating systems, and credentials. Web pentesting is placed after network because it introduces a new attack surface, a new toolset centered on Burp Suite, and a different vulnerability taxonomy in the OWASP Top 10. Students arrive at web hacking with mature enumeration instincts and comfort with shells. The final simulation block removes the instructor from the equation entirely and asks the student to perform realistic end-to-end engagements independently, then communicate results professionally.</p>
+  </div>
+
+  <div style="margin-top: 48px;">
+    <div class="section-header" style="margin-bottom: 32px;">
+      <span class="section-number">// 01.1</span>
+      <h2 class="section-title">The Three <span class="accent2">Pillars</span></h2>
+    </div>
+    <div class="pillar-grid">
+      <div class="pillar">
+        <span class="pillar-num">01</span>
+        <h3>Fundamentals</h3>
+        <p>Networking, Linux, Windows OS, Active Directory, scripting, and reconnaissance. Nothing is skippable here. A student who can run Metasploit but cannot read a packet capture is not a junior pentester — they are a script runner.</p>
+        <span class="pillar-tag tag-green">Modules 1 – 3</span>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">02</span>
+        <h3>Network &amp; System Pentesting</h3>
+        <p>Exploitation, password attacks, privilege escalation, and Active Directory attack chains. Builds directly on the fundamentals layer. Every technique has a reason rooted in what was already learned.</p>
+        <span class="pillar-tag tag-blue">Modules 4 – 5</span>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">03</span>
+        <h3>Web Application Pentesting</h3>
+        <p>Web fundamentals through the full OWASP attack surface. Students arrive here with mature enumeration instincts, a working lab, and comfort with shells — making the web content land at a deeper level.</p>
+        <span class="pillar-tag tag-red">Module 6</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 48px;">
+    <div class="section-header" style="margin-bottom: 24px;">
+      <span class="section-number">// 01.2</span>
+      <h2 class="section-title">Engagement <span class="accent">Lifecycle</span></h2>
+    </div>
+    <p style="font-size:14px; color: var(--text-dim); margin-bottom: 24px;">The penetration testing lifecycle that this course teaches students to execute end-to-end:</p>
+    <div class="flow">
+      <div class="flow-step">
+        <span class="flow-step-num">01</span>
+        <div class="flow-step-name">Scoping</div>
+        <div class="flow-step-desc">Define targets, rules of engagement, and legal authorization before any testing begins.</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-step-num">02</span>
+        <div class="flow-step-name">Reconnaissance</div>
+        <div class="flow-step-desc">Passive and active information gathering. OSINT, DNS, WHOIS, and network mapping.</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-step-num">03</span>
+        <div class="flow-step-name">Enumeration</div>
+        <div class="flow-step-desc">Deep service interrogation. Identify versions, users, shares, and potential entry points.</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-step-num">04</span>
+        <div class="flow-step-name">Vuln ID</div>
+        <div class="flow-step-desc">Map discovered services to known CVEs, misconfigurations, and exploitable weaknesses.</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-step-num">05</span>
+        <div class="flow-step-name">Exploitation</div>
+        <div class="flow-step-desc">Gain initial access. Execute payloads, abuse services, and establish a foothold.</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-step-num">06</span>
+        <div class="flow-step-name">Post-Exploit</div>
+        <div class="flow-step-desc">Enumerate the compromised host. Hunt credentials, pivot paths, and sensitive data.</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-step-num">07</span>
+        <div class="flow-step-name">Priv Escalation</div>
+        <div class="flow-step-desc">Move from low-privilege to root or SYSTEM. Exploit misconfigs, tokens, and weak services.</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-step-num">08</span>
+        <div class="flow-step-name">Reporting</div>
+        <div class="flow-step-desc">Document every finding with evidence, impact, and actionable remediation recommendations.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- LAB TARGETS -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-number">// 02</span>
+    <h2 class="section-title">Lab <span class="accent2">Targets</span></h2>
+  </div>
+
+  <p style="font-size: 14px; color: var(--text-dim); max-width: 800px; margin-bottom: 40px; line-height: 1.8;">
+    The three real-world lab engagements in Module 8 are not single-machine CTF challenges. Each is a network-level simulation involving multiple hosts, real attack paths, and a full professional engagement process from discovery to report. Students operate without guidance in all three.
+  </p>
+
+  <div class="targets-grid">
+    <div class="target-card">
+      <div class="target-type">// Lab 01 — Network</div>
+      <div class="target-name">Linux Network<br>Environment</div>
+      <div class="target-details">
+        <div class="target-detail">
+          <span class="detail-key">Architecture</span>
+          <span class="detail-val">Multiple Linux hosts on an internal network segment. Not individual machines — a full network with inter-host relationships and layered access.</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Entry Point</span>
+          <span class="detail-val">Unknown. Student must perform full discovery and enumeration from a foothold machine with no prior knowledge of the network.</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Phases</span>
+          <span class="detail-val">Discovery → Enumeration → Vulnerability ID → Exploitation → Post-Exploitation → Privilege Escalation → Pivoting → Evidence Collection</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Methodology</span>
+          <span class="detail-val">This lab is delivered with explicit methodology narration — the student explains their thinking at each decision point, making the structured approach transferable.</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Goal</span>
+          <span class="detail-val">Root access on all reachable hosts. Full post-exploitation evidence collected and documented.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="target-card">
+      <div class="target-type">// Lab 02 — Active Directory</div>
+      <div class="target-name">Active Directory<br>Network Environment</div>
+      <div class="target-details">
+        <div class="target-detail">
+          <span class="detail-key">Architecture</span>
+          <span class="detail-val">Domain Controller, member servers, and workstations. A realistic enterprise AD environment with domain trust relationships and service accounts.</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Entry Point</span>
+          <span class="detail-val">Low-privileged domain user credentials simulating a breached-environment scenario. Student starts with a foothold, not from outside.</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Phases</span>
+          <span class="detail-val">Network Discovery → AD Enumeration (BloodHound/PowerView) → Credential Capture → Lateral Movement → Privilege Escalation → Domain Admin Compromise</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Key Skills</span>
+          <span class="detail-val">LLMNR poisoning, NTLM relay, Kerberoasting, AS-REP Roasting, Pass-the-Hash, attack path visualization, DCSync awareness.</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Goal</span>
+          <span class="detail-val">Domain Admin compromise. Full kill chain documented with evidence at every step.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="target-card">
+      <div class="target-type">// Lab 03 — Web Application</div>
+      <div class="target-name">Web Application<br>Assessment</div>
+      <div class="target-details">
+        <div class="target-detail">
+          <span class="detail-key">Architecture</span>
+          <span class="detail-val">A multi-vulnerability web application requiring vulnerability chaining to achieve meaningful impact. No single finding wins — the chain is the goal.</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Entry Point</span>
+          <span class="detail-val">Unauthenticated external access. Full black-box assessment from zero knowledge of the application.</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Phases</span>
+          <span class="detail-val">Reconnaissance → Technology Fingerprinting → Endpoint Discovery → Vulnerability Identification → Exploitation → Post-Exploitation → Evidence Collection</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Key Skills</span>
+          <span class="detail-val">Multiple OWASP Top 10 categories in one target. Students must identify, prioritize, and chain findings using Burp Suite, Gobuster, ffuf, sqlmap, and manual techniques.</span>
+        </div>
+        <div class="target-detail">
+          <span class="detail-key">Goal</span>
+          <span class="detail-val">Remote code execution on the underlying server. Complete professional pentest report with CVSS-rated findings and remediation recommendations.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- COURSE OUTLINE -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-number">// 03</span>
+    <h2 class="section-title">Full Course <span class="accent">Outline</span></h2>
+  </div>
+
+  <div class="modules-container">
+
+    <!-- MODULE 1 -->
+    <div class="module mod-1 open">
+      <div class="module-accent-bar"></div>
+      <div class="module-header" onclick="toggleModule(this)">
+        <div class="module-num">01</div>
+        <div class="module-info">
+          <div class="module-tag">// Pillar 1 — Foundations</div>
+          <div class="module-title">Foundations</div>
+        </div>
+        <div class="module-stats">
+          <div class="module-stat"><div class="stat-val">6</div><div class="stat-label">Sessions</div></div>
+          <div class="module-stat"><div class="stat-val">18</div><div class="stat-label">Hours</div></div>
+        </div>
+        <div class="module-toggle">+</div>
+      </div>
+      <div class="module-body">
+        <div class="sessions-list">
+
+          <div class="session">
+            <span class="session-num">S-01</span>
+            <div class="session-title">The World of Penetration Testing</div>
+            <ul class="session-topics">
+              <li>What penetration testing is and how it differs from vulnerability assessment and red teaming</li>
+              <li>Types of engagements: black box, grey box, white box</li>
+              <li>The penetration testing lifecycle: scoping, reconnaissance, exploitation, post-exploitation, reporting</li>
+              <li>Legal and ethical framework: laws, authorization, rules of engagement, responsible disclosure</li>
+              <li>Career paths and certification overview: eJPT, PJPT, CEH, PNPT, OSCP</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Setting up VirtualBox or VMware and downloading Kali Linux. First boot and initial orientation.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-02</span>
+            <div class="session-title">Networking Fundamentals for Pentesters</div>
+            <ul class="session-topics">
+              <li>OSI and TCP/IP models in the context of attacks</li>
+              <li>IP addressing, subnetting, and CIDR notation with practical exercises</li>
+              <li>Protocols every pentester must know: ARP, DNS, DHCP, HTTP/S, FTP, SSH, SMB, RDP, SMTP</li>
+              <li>Understanding ports and services from an attacker perspective</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Wireshark packet capture and traffic analysis. Identifying protocols and extracting information from captures.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-03</span>
+            <div class="session-title">Linux for Penetration Testers</div>
+            <ul class="session-topics">
+              <li>Linux filesystem, permissions, users, and groups</li>
+              <li>Essential shell commands: navigation, file manipulation, searching, piping, redirection</li>
+              <li>Package management and tool installation on Kali Linux</li>
+              <li>Bash scripting basics: variables, loops, and conditionals</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Navigating and operating Kali Linux entirely from the terminal. No GUI allowed during the exercise.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-04</span>
+            <div class="session-title">Programming and Scripting Primer</div>
+            <ul class="session-topics">
+              <li>Python fundamentals for security: sockets, requests library, file handling</li>
+              <li>Reading and modifying existing exploit scripts safely</li>
+              <li>Bash automation for repetitive enumeration tasks</li>
+              <li>Introduction to PowerShell syntax and its relevance in Windows pentesting</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Writing a simple port scanner in Python from scratch without using any external libraries.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-05</span>
+            <div class="session-title">Windows OS Essentials for Pentesters <span class="session-badge">Windows</span></div>
+            <ul class="session-topics">
+              <li>Windows architecture: drives, directories, and system folders</li>
+              <li>Users, groups, administrators, and the Windows permissions model</li>
+              <li>Windows command line and PowerShell essentials for pentesters</li>
+              <li>Services, processes, and the registry from an attacker perspective</li>
+              <li>Windows authentication fundamentals: NTLM and Kerberos compared to Linux authentication</li>
+              <li>Remote access protocols and what they expose: RDP, SMB, WinRM</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Navigating and enumerating a Windows machine entirely from the command line and PowerShell.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-06</span>
+            <div class="session-title">Active Directory Fundamentals <span class="session-badge ad">Active Directory</span></div>
+            <ul class="session-topics">
+              <li>What Active Directory is and why every enterprise network runs on it</li>
+              <li>Core AD components: domains, forests, trees, trusts, Domain Controllers, OUs, and GPOs</li>
+              <li>Users, groups, and service accounts in an AD environment — why service accounts are high value targets</li>
+              <li>Kerberos authentication flow end to end: AS-REQ, TGT, TGS, and service tickets</li>
+              <li>NTLM authentication in an AD environment and how it differs from Kerberos</li>
+              <li>Understanding what Domain Admin means and why it is the goal of most internal network engagements</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Setting up a basic AD lab environment with a Domain Controller and two Windows machines using VirtualBox.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 2 -->
+    <div class="module mod-2">
+      <div class="module-accent-bar"></div>
+      <div class="module-header" onclick="toggleModule(this)">
+        <div class="module-num">02</div>
+        <div class="module-info">
+          <div class="module-tag">// Pillar 1 — Foundations</div>
+          <div class="module-title">Information Gathering &amp; Reconnaissance</div>
+        </div>
+        <div class="module-stats">
+          <div class="module-stat"><div class="stat-val">2</div><div class="stat-label">Sessions</div></div>
+          <div class="module-stat"><div class="stat-val">6</div><div class="stat-label">Hours</div></div>
+        </div>
+        <div class="module-toggle">+</div>
+      </div>
+      <div class="module-body">
+        <div class="sessions-list">
+
+          <div class="session">
+            <span class="session-num">S-07</span>
+            <div class="session-title">Passive Reconnaissance and OSINT</div>
+            <ul class="session-topics">
+              <li>The OSINT mindset: what attackers look for before touching a target</li>
+              <li>Google Dorking: operators, filetype searches, and finding exposed assets</li>
+              <li>Tools: theHarvester, Shodan, Censys, Maltego free tier</li>
+              <li>Social engineering context: LinkedIn enumeration and breach databases</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Producing a full passive reconnaissance report on a practice target using only open source tools and no direct contact with the target.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-08</span>
+            <div class="session-title">Active Reconnaissance and Service Enumeration</div>
+            <ul class="session-topics">
+              <li>Nmap: host discovery, port scanning, service and version detection, OS fingerprinting, and NSE scripts</li>
+              <li>Masscan and Netdiscover for fast network discovery</li>
+              <li>SMB enumeration: enum4linux, smbclient, CrackMapExec basics</li>
+              <li>DNS enumeration: zone transfers, dnsenum, dnsrecon</li>
+              <li>Web server fingerprinting: Nikto and HTTP header analysis</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Scanning a lab network, building a full asset inventory, and enumerating all discovered services across multiple hosts.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 3 -->
+    <div class="module mod-3">
+      <div class="module-accent-bar"></div>
+      <div class="module-header" onclick="toggleModule(this)">
+        <div class="module-num">03</div>
+        <div class="module-info">
+          <div class="module-tag">// Pillar 1 — Foundations</div>
+          <div class="module-title">Vulnerability Assessment</div>
+        </div>
+        <div class="module-stats">
+          <div class="module-stat"><div class="stat-val">2</div><div class="stat-label">Sessions</div></div>
+          <div class="module-stat"><div class="stat-val">6</div><div class="stat-label">Hours</div></div>
+        </div>
+        <div class="module-toggle">+</div>
+      </div>
+      <div class="module-body">
+        <div class="sessions-list">
+
+          <div class="session">
+            <span class="session-num">S-09</span>
+            <div class="session-title">Vulnerability Scanning and Identification</div>
+            <ul class="session-topics">
+              <li>What is a vulnerability versus a misconfiguration versus a design flaw</li>
+              <li>CVE, CVSS scoring, and the NVD: how to read and prioritize findings</li>
+              <li>Nessus Essentials: setup, scanning policies, and interpreting results</li>
+              <li>OpenVAS as a free alternative</li>
+              <li>Vulnerability research: ExploitDB, Rapid7, and GitHub proof of concept repositories</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Running a vulnerability scan and mapping findings to CVEs on Metasploitable.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-10</span>
+            <div class="session-title">Manual Verification and Exploitation Research</div>
+            <ul class="session-topics">
+              <li>Why scanners produce false positives and false negatives</li>
+              <li>Manually verifying findings with targeted Nmap NSE scripts</li>
+              <li>Reading exploit code before running it: understanding what it does and assessing safety</li>
+              <li>Prioritization methodology: deciding what to attack first based on impact and exploitability</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Validating scanner output through manual verification and building a prioritized attack plan on a vulnerable VM.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 4 -->
+    <div class="module mod-4">
+      <div class="module-accent-bar"></div>
+      <div class="module-header" onclick="toggleModule(this)">
+        <div class="module-num">04</div>
+        <div class="module-info">
+          <div class="module-tag">// Pillar 2 — Network &amp; System Pentesting</div>
+          <div class="module-title">Exploitation Fundamentals</div>
+        </div>
+        <div class="module-stats">
+          <div class="module-stat"><div class="stat-val">5</div><div class="stat-label">Sessions</div></div>
+          <div class="module-stat"><div class="stat-val">15</div><div class="stat-label">Hours</div></div>
+        </div>
+        <div class="module-toggle">+</div>
+      </div>
+      <div class="module-body">
+        <div class="sessions-list">
+
+          <div class="session">
+            <span class="session-num">S-11</span>
+            <div class="session-title">Exploitation Methodology and Metasploit Framework</div>
+            <ul class="session-topics">
+              <li>The exploitation mindset: moving from a service version to a working shell</li>
+              <li>Metasploit architecture: modules, payloads, encoders, and listeners</li>
+              <li>msfconsole workflow: search, use, set, exploit</li>
+              <li>Meterpreter: what it is, why it matters, and its core commands</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Exploiting a vulnerable service with Metasploit on Metasploitable 2 and 3.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-12</span>
+            <div class="session-title">Password Attacks</div>
+            <ul class="session-topics">
+              <li>Authentication fundamentals: hashing, salting, and common algorithms</li>
+              <li>Online attacks: Hydra and Medusa against SSH, FTP, RDP, and HTTP</li>
+              <li>Offline attacks: Hashcat and John the Ripper with wordlists and rules</li>
+              <li>Default credential exploitation across common services</li>
+              <li>CrackMapExec for credential spraying across a network</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Cracking captured hashes and brute forcing service logins in a lab network environment.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-13</span>
+            <div class="session-title">Network Level Exploitation</div>
+            <ul class="session-topics">
+              <li>Exploiting unpatched services: EternalBlue MS17-010 full walkthrough</li>
+              <li>Man-in-the-middle attacks: ARP poisoning with arpspoof and Ettercap</li>
+              <li>Responder: capturing NTLM hashes by poisoning LLMNR and NBT-NS</li>
+              <li>Pass-the-Hash: concept, tools, and practical application</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">ARP poisoning, credential capture, and service exploitation in a multi-host lab network.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-14</span>
+            <div class="session-title">Client Side Attacks and Payload Delivery</div>
+            <ul class="session-topics">
+              <li>How client side attacks work: the attacker delivers, the victim executes</li>
+              <li>Malicious file creation: macro-enabled documents and HTA files</li>
+              <li>Payload generation with msfvenom: stageless and staged payloads</li>
+              <li>Setting up listeners and catching reverse shells</li>
+              <li>Introduction to the Social Engineering Toolkit (SET)</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Generating a payload, delivering it to a target machine, and catching a reverse shell with a Metasploit listener.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-15</span>
+            <div class="session-title">Post Exploitation Fundamentals</div>
+            <ul class="session-topics">
+              <li>Situational awareness after getting a shell: where am I, who am I, what can I reach</li>
+              <li>Local enumeration: users, groups, network interfaces, running processes, and installed software</li>
+              <li>Sensitive data hunting: configuration files, plaintext credentials, browser saved passwords</li>
+              <li>Pivoting concepts: port forwarding and SSH tunneling to reach internal network segments</li>
+              <li>Persistence techniques overview: what they are and when they are relevant</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Full post exploitation enumeration using both Meterpreter and manual techniques on a compromised host.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 5 -->
+    <div class="module mod-5">
+      <div class="module-accent-bar"></div>
+      <div class="module-header" onclick="toggleModule(this)">
+        <div class="module-num">05</div>
+        <div class="module-info">
+          <div class="module-tag">// Pillar 2 — Network &amp; System Pentesting</div>
+          <div class="module-title">Privilege Escalation</div>
+        </div>
+        <div class="module-stats">
+          <div class="module-stat"><div class="stat-val">3</div><div class="stat-label">Sessions</div></div>
+          <div class="module-stat"><div class="stat-val">9</div><div class="stat-label">Hours</div></div>
+        </div>
+        <div class="module-toggle">+</div>
+      </div>
+      <div class="module-body">
+        <div class="sessions-list">
+
+          <div class="session">
+            <span class="session-num">S-16</span>
+            <div class="session-title">Linux Privilege Escalation</div>
+            <ul class="session-topics">
+              <li>The goal: moving from a low privileged shell to root</li>
+              <li>Automated enumeration: LinPEAS, LinEnum, and linux-smart-enumeration</li>
+              <li>Manual checks: sudo misconfigurations, SUID and SGID binaries, cron jobs, and world writable paths</li>
+              <li>Weak file permissions and credential exposure in configuration files</li>
+              <li>Kernel exploits: identifying the kernel version and finding applicable exploits responsibly</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Full privilege escalation on a deliberately vulnerable Linux VM from low-privileged shell to root.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-17</span>
+            <div class="session-title">Windows Privilege Escalation <span class="session-badge">Windows</span></div>
+            <ul class="session-topics">
+              <li>Windows tokens, privileges, and User Account Control from an attacker perspective</li>
+              <li>Automated enumeration: WinPEAS, Seatbelt, and PowerUp</li>
+              <li>Service misconfigurations: unquoted service paths and weak service permissions</li>
+              <li>Registry-based privilege abuse</li>
+              <li>Token impersonation: PrintSpoofer and Potato family exploits</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Full privilege escalation on a Windows lab VM from a low privileged shell to SYSTEM.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-18</span>
+            <div class="session-title">Active Directory Attacks <span class="session-badge ad">Active Directory</span></div>
+            <ul class="session-topics">
+              <li>LLMNR and NBT-NS poisoning with Responder in an AD environment</li>
+              <li>NTLM relay attacks with ntlmrelayx: capturing and relaying credentials to compromise hosts</li>
+              <li>Kerberoasting: requesting service tickets and cracking them offline</li>
+              <li>AS-REP Roasting: targeting accounts that do not require Kerberos pre-authentication</li>
+              <li>BloodHound and SharpHound: mapping the AD environment and identifying attack paths to Domain Admin</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">End-to-end AD attack chain from initial foothold to Domain Admin in the lab environment built in Session 6.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 6 -->
+    <div class="module mod-6">
+      <div class="module-accent-bar"></div>
+      <div class="module-header" onclick="toggleModule(this)">
+        <div class="module-num">06</div>
+        <div class="module-info">
+          <div class="module-tag">// Pillar 3 — Web Application Pentesting</div>
+          <div class="module-title">Web Application Penetration Testing</div>
+        </div>
+        <div class="module-stats">
+          <div class="module-stat"><div class="stat-val">9</div><div class="stat-label">Sessions</div></div>
+          <div class="module-stat"><div class="stat-val">27</div><div class="stat-label">Hours</div></div>
+        </div>
+        <div class="module-toggle">+</div>
+      </div>
+      <div class="module-body">
+        <div class="sessions-list">
+
+          <div class="session">
+            <span class="session-num">S-19</span>
+            <div class="session-title">Web Fundamentals for Pentesters</div>
+            <ul class="session-topics">
+              <li>The full HTTP and HTTPS lifecycle: DNS resolution, TCP handshake, request, response, and rendering</li>
+              <li>HTTP methods: GET, POST, PUT, DELETE, PATCH and their security implications</li>
+              <li>HTTP status codes and what they reveal to an attacker</li>
+              <li>Headers in depth: Host, User-Agent, Referer, Authorization, Content-Type, and security headers</li>
+              <li>Cookies: structure, flags (HttpOnly, Secure, SameSite), and session management</li>
+              <li>HTTPS and TLS: what it protects and what it does not protect</li>
+              <li>Web application architecture: client, web server, application server, database, and CDN</li>
+              <li>APIs: REST versus SOAP, JSON versus XML, and how modern applications are increasingly API driven</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Using browser developer tools and Burp Suite proxy to intercept, inspect, and manually modify live HTTP requests and responses.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-20</span>
+            <div class="session-title">Authentication Vulnerabilities and IDOR</div>
+            <ul class="session-topics">
+              <li>Broken authentication: weak credentials, insecure remember me functionality, and predictable session tokens</li>
+              <li>Session hijacking: stealing and replaying cookies to impersonate authenticated users</li>
+              <li>Password reset logic flaws: how broken reset flows allow account takeover</li>
+              <li>JWT vulnerabilities: none algorithm attack, weak secret brute forcing, and algorithm confusion</li>
+              <li>IDOR: understanding how applications reference resources and how attackers manipulate those references</li>
+              <li>Horizontal versus vertical privilege escalation through IDOR</li>
+              <li>Chaining authentication flaws with IDOR to maximize impact</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">PortSwigger Web Security Academy — Authentication labs and IDOR labs.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-21</span>
+            <div class="session-title">Path Traversal and File Upload Vulnerabilities</div>
+            <ul class="session-topics">
+              <li>Path traversal: how applications handle file paths and how attackers manipulate them to read sensitive system files</li>
+              <li>Bypassing common path traversal sanitization: encoding, double encoding, and null bytes</li>
+              <li>Target files: /etc/passwd, web server configs, application source code, and SSH keys</li>
+              <li>File upload vulnerabilities: why unrestricted file uploads are critical severity findings</li>
+              <li>Bypassing extension validation: double extensions, case manipulation, and blacklist bypass</li>
+              <li>Bypassing MIME type and content type validation</li>
+              <li>Uploading web shells: achieving remote code execution through a malicious uploaded file</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">PortSwigger Web Security Academy — Path Traversal labs and File Upload labs.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-22</span>
+            <div class="session-title">SSRF and OS Command Injection</div>
+            <ul class="session-topics">
+              <li>SSRF: how applications make outbound requests and how attackers hijack those requests to reach internal services</li>
+              <li>Basic SSRF: probing internal network services and localhost ports through a vulnerable application</li>
+              <li>Blind SSRF: detecting SSRF when there is no direct response using out of band techniques</li>
+              <li>SSRF against cloud metadata endpoints: AWS IMDSv1 and retrieving instance credentials</li>
+              <li>OS Command Injection: how web applications call system commands and how unsanitized input reaches the OS</li>
+              <li>Injection contexts: inline injection, chained commands, and blind command injection</li>
+              <li>Detecting blind command injection using time delays and out of band DNS callbacks</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">PortSwigger Web Security Academy — SSRF labs and OS Command Injection labs.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-23</span>
+            <div class="session-title">SQL Injection <span class="session-badge">Standalone</span></div>
+            <ul class="session-topics">
+              <li>How web applications interact with databases and where user input enters SQL queries</li>
+              <li>In-band SQL injection: UNION based extraction and error based extraction</li>
+              <li>Inferential SQL injection: boolean based blind and time based blind techniques</li>
+              <li>Mapping the database: enumerating tables, columns, and extracting data manually</li>
+              <li>Bypassing login forms with SQL injection</li>
+              <li>Automated SQL injection: sqlmap workflow, tamper scripts, and responsible use</li>
+              <li>Escalating SQL injection to remote code execution via INTO OUTFILE and web shells</li>
+              <li>Second order SQL injection: stored and deferred injection</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">PortSwigger Web Security Academy — SQL Injection labs including blind and advanced labs.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-24</span>
+            <div class="session-title">CSRF</div>
+            <ul class="session-topics">
+              <li>What CSRF is: forging authenticated requests on behalf of a victim user without their knowledge</li>
+              <li>How CSRF exploits the server's trust in the browser's automatically attached credentials</li>
+              <li>Conditions required for a CSRF attack to succeed</li>
+              <li>Crafting a CSRF proof of concept: HTML forms, image tags, and JavaScript based CSRF</li>
+              <li>CSRF with JSON requests and how content type restrictions affect exploitability</li>
+              <li>SameSite cookie attribute: Strict, Lax, and None and how each affects CSRF exploitability</li>
+              <li>CSRF tokens: common implementation flaws that make them bypassable</li>
+              <li>Chaining CSRF with XSS to bypass SameSite and token protections</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">PortSwigger Web Security Academy — CSRF labs.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-25</span>
+            <div class="session-title">XSS — Cross Site Scripting <span class="session-badge">Standalone</span></div>
+            <ul class="session-topics">
+              <li>The browser trust model and why XSS is possible</li>
+              <li>Reflected XSS: unsanitized input immediately returned and executed in the victim's browser</li>
+              <li>Stored XSS: persistent payloads that execute for every user who visits the affected page</li>
+              <li>DOM based XSS: client side JavaScript sinks that execute attacker controlled input without server involvement</li>
+              <li>Real world XSS impact: session token theft, account takeover, keylogging, redirection, and defacement</li>
+              <li>Bypassing common XSS filters and WAF rules: encoding, polyglots, and context awareness</li>
+              <li>XSS in different HTML contexts: attribute injection, JavaScript injection, and URL injection</li>
+              <li>Chaining stored XSS with CSRF bypass</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">PortSwigger Web Security Academy — XSS labs including DOM based and stored labs.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-26</span>
+            <div class="session-title">XXE — XML External Entity Injection <span class="session-badge">Standalone</span></div>
+            <ul class="session-topics">
+              <li>What XML is and how XML parsers work: entities, DTDs, and external entity resolution</li>
+              <li>Classic XXE to file read: retrieving sensitive server files through a vulnerable XML parser</li>
+              <li>XXE to SSRF: using external entity resolution to probe internal network services</li>
+              <li>Blind XXE: detecting and exploiting XXE when there is no direct output using out of band techniques</li>
+              <li>XXE via file upload: exploiting applications that parse XML in uploaded files such as SVG, XLSX, and DOCX</li>
+              <li>XXE in SOAP web services and API endpoints that accept XML</li>
+              <li>Mitigations: disabling external entity processing and why it is not always correctly implemented</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">PortSwigger Web Security Academy — XXE labs including blind and file upload based labs.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-27</span>
+            <div class="session-title">Web Application Full Attack Chain <span class="session-badge lab">Capstone Lab</span></div>
+            <ul class="session-topics">
+              <li>Phase 1 — Reconnaissance: technology fingerprinting, directory enumeration, subdomain enumeration, and endpoint discovery</li>
+              <li>Phase 2 — Vulnerability identification: mapping discovered endpoints to vulnerability classes without firing a single exploit</li>
+              <li>Phase 3 — Exploitation: chaining multiple vulnerabilities to achieve meaningful impact</li>
+              <li>Phase 4 — Post exploitation: what to do after achieving code execution on the web server</li>
+              <li>Phase 5 — Evidence collection: documenting every step in real time as a professional engagement requires</li>
+              <li>Student works through a multi-vulnerability application entirely without guidance</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Full unsupported web application attack chain on a deliberately vulnerable application. Debrief covers the optimal attack chain, divergence points, and how all findings would be rated and written in a professional report.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 7 -->
+    <div class="module mod-7">
+      <div class="module-accent-bar"></div>
+      <div class="module-header" onclick="toggleModule(this)">
+        <div class="module-num">07</div>
+        <div class="module-info">
+          <div class="module-tag">// Cross-Cutting — Both Pillars</div>
+          <div class="module-title">Reporting &amp; Professional Practice</div>
+        </div>
+        <div class="module-stats">
+          <div class="module-stat"><div class="stat-val">3</div><div class="stat-label">Sessions</div></div>
+          <div class="module-stat"><div class="stat-val">9</div><div class="stat-label">Hours</div></div>
+        </div>
+        <div class="module-toggle">+</div>
+      </div>
+      <div class="module-body">
+        <div class="sessions-list">
+
+          <div class="session">
+            <span class="session-num">S-28</span>
+            <div class="session-title">Penetration Testing Report Fundamentals</div>
+            <ul class="session-topics">
+              <li>Why the report is the actual deliverable of every engagement</li>
+              <li>Report structure: executive summary, scope, methodology, findings, remediation, and appendices</li>
+              <li>Writing for two audiences: non-technical executives and technical engineers simultaneously</li>
+              <li>CVSS scoring and risk rating for individual findings</li>
+              <li>Evidence collection during engagements: screenshots, command logs, and note taking with Obsidian or Cherrytree</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Lab</span>
+              <span class="hands-on-text">Annotating and documenting a completed lab engagement in full preparation for the writing workshop in the next session.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-29</span>
+            <div class="session-title">Report Writing Workshop</div>
+            <ul class="session-topics">
+              <li>Live workshop: writing a complete set of findings from a previously completed lab</li>
+              <li>Crafting a strong vulnerability title, description, impact statement, proof of concept, and remediation recommendation</li>
+              <li>Common reporting mistakes and how to avoid them</li>
+              <li>Peer review exercise: reviewing and improving each other's sample findings</li>
+              <li>Delivering the report in professional format: Markdown to PDF or Word</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Workshop</span>
+              <span class="hands-on-text">Students produce a full professional report section covering at least three findings from a completed lab. Peer review and instructor feedback in the same session.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-30</span>
+            <div class="session-title">Legal, Ethical, and Professional Standards</div>
+            <ul class="session-topics">
+              <li>Scope creep: what it is and how to handle discovering systems outside the agreed scope</li>
+              <li>Rules of engagement document: reading, writing, and enforcing them</li>
+              <li>Non-disclosure agreements and liability in penetration testing engagements</li>
+              <li>Handling sensitive data discovered during an engagement: credentials, PII, and confidential documents</li>
+              <li>Responsible disclosure and bug bounty program etiquette</li>
+              <li>Ethics in offensive security: dual use knowledge and where the professional line sits</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Exercise</span>
+              <span class="hands-on-text">Case study analysis: students review three real-world scenario descriptions and determine the correct professional response in each case.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 8 -->
+    <div class="module mod-8">
+      <div class="module-accent-bar"></div>
+      <div class="module-header" onclick="toggleModule(this)">
+        <div class="module-num">08</div>
+        <div class="module-info">
+          <div class="module-tag">// Simulation Block — No Instructor Guidance</div>
+          <div class="module-title">Real World Labs</div>
+        </div>
+        <div class="module-stats">
+          <div class="module-stat"><div class="stat-val">4</div><div class="stat-label">Sessions</div></div>
+          <div class="module-stat"><div class="stat-val">12</div><div class="stat-label">Hours</div></div>
+        </div>
+        <div class="module-toggle">+</div>
+      </div>
+      <div class="module-body">
+        <div class="sessions-list">
+
+          <div class="session">
+            <span class="session-num">S-31</span>
+            <div class="session-title">Methodology Building + Network Lab: Linux Based <span class="session-badge lab">Real World Lab</span></div>
+            <ul class="session-topics">
+              <li>Structured methodology for approaching an unknown network: think before you scan, scan before you exploit, document everything</li>
+              <li>Full real world engagement on a Linux based internal network: multiple hosts, services, and layered attack paths</li>
+              <li>Phases in sequence: discovery, enumeration, vulnerability identification, exploitation, post-exploitation, privilege escalation, pivoting, and evidence collection</li>
+              <li>Student narrates their thinking at each decision point — methodology made explicit and transferable</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Debrief</span>
+              <span class="hands-on-text">Full debrief covering the optimal attack path, where common decision errors occur, and what the professional report for this engagement would look like.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-32</span>
+            <div class="session-title">Network Lab: Active Directory Based <span class="session-badge ad">Active Directory</span></div>
+            <ul class="session-topics">
+              <li>Full real world engagement on an AD network: Domain Controller, member servers, and workstations</li>
+              <li>Phases: network discovery, AD enumeration with BloodHound and PowerView, initial foothold, credential capture, lateral movement, privilege escalation, Domain Admin compromise</li>
+              <li>No guidance during execution: students apply the full methodology independently</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Debrief</span>
+              <span class="hands-on-text">Reviewing the full kill chain, attack path decisions, common failure points in AD engagements, and how the Domain Admin compromise would be documented in a professional report.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-33</span>
+            <div class="session-title">Web Application Lab <span class="session-badge lab">Real World Lab</span></div>
+            <ul class="session-topics">
+              <li>Full real world web application assessment: a multi-vulnerability target requiring vulnerability chaining</li>
+              <li>Phases: reconnaissance, technology fingerprinting, endpoint discovery, vulnerability identification across multiple OWASP categories, exploitation, post-exploitation access, and evidence collection</li>
+              <li>Students document findings in real time as they would in a professional engagement</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Debrief</span>
+              <span class="hands-on-text">Reviewing the attack chain, how findings would be rated and presented in a report, and appropriate remediation recommendations for each vulnerability class found.</span>
+            </div>
+          </div>
+
+          <div class="session">
+            <span class="session-num">S-34</span>
+            <div class="session-title">Reporting Debrief and Career Roadmap <span class="session-badge lab">Final Session</span></div>
+            <ul class="session-topics">
+              <li>Students submit a condensed penetration testing report based on one of the three labs from Sessions 31–33</li>
+              <li>Instructor and peer review: findings quality, evidence quality, writing clarity, and remediation recommendations</li>
+              <li>Career roadmap: next certifications in sequence — eJPT v2, PJPT, CEH Practical or PNPT, then OSCP</li>
+              <li>Recommended continued practice: TryHackMe learning paths, HackTheBox starting point machines, VulnHub list</li>
+            </ul>
+            <div class="session-hands-on">
+              <span class="hands-on-label">Closing</span>
+              <span class="hands-on-text">Final Q&amp;A. Students leave with a submitted report, a peer review record, and a clear written roadmap to their next certification.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TOOLS -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-number">// 04</span>
+    <h2 class="section-title">Tools <span class="accent">Arsenal</span></h2>
+  </div>
+  <div class="tools-grid">
+    <div class="tool-item"><div class="tool-dot"></div>Kali Linux</div>
+    <div class="tool-item"><div class="tool-dot"></div>VirtualBox / VMware</div>
+    <div class="tool-item"><div class="tool-dot"></div>Nmap</div>
+    <div class="tool-item"><div class="tool-dot"></div>Masscan</div>
+    <div class="tool-item"><div class="tool-dot"></div>Netdiscover</div>
+    <div class="tool-item"><div class="tool-dot"></div>Burp Suite</div>
+    <div class="tool-item"><div class="tool-dot"></div>Metasploit Framework</div>
+    <div class="tool-item"><div class="tool-dot"></div>msfvenom</div>
+    <div class="tool-item"><div class="tool-dot"></div>Hydra</div>
+    <div class="tool-item"><div class="tool-dot"></div>Hashcat</div>
+    <div class="tool-item"><div class="tool-dot"></div>John the Ripper</div>
+    <div class="tool-item"><div class="tool-dot"></div>Gobuster</div>
+    <div class="tool-item"><div class="tool-dot"></div>ffuf</div>
+    <div class="tool-item"><div class="tool-dot"></div>Dirbuster</div>
+    <div class="tool-item"><div class="tool-dot"></div>Wireshark</div>
+    <div class="tool-item"><div class="tool-dot"></div>tcpdump</div>
+    <div class="tool-item"><div class="tool-dot"></div>Nikto</div>
+    <div class="tool-item"><div class="tool-dot"></div>Nessus Essentials</div>
+    <div class="tool-item"><div class="tool-dot"></div>OpenVAS</div>
+    <div class="tool-item"><div class="tool-dot"></div>LinPEAS</div>
+    <div class="tool-item"><div class="tool-dot"></div>WinPEAS</div>
+    <div class="tool-item"><div class="tool-dot"></div>Seatbelt</div>
+    <div class="tool-item"><div class="tool-dot"></div>PowerUp</div>
+    <div class="tool-item"><div class="tool-dot"></div>Responder</div>
+    <div class="tool-item"><div class="tool-dot"></div>CrackMapExec</div>
+    <div class="tool-item"><div class="tool-dot"></div>ntlmrelayx</div>
+    <div class="tool-item"><div class="tool-dot"></div>BloodHound</div>
+    <div class="tool-item"><div class="tool-dot"></div>SharpHound</div>
+    <div class="tool-item"><div class="tool-dot"></div>PowerView</div>
+    <div class="tool-item"><div class="tool-dot"></div>sqlmap</div>
+    <div class="tool-item"><div class="tool-dot"></div>theHarvester</div>
+    <div class="tool-item"><div class="tool-dot"></div>Shodan</div>
+    <div class="tool-item"><div class="tool-dot"></div>Censys</div>
+    <div class="tool-item"><div class="tool-dot"></div>Maltego (free)</div>
+    <div class="tool-item"><div class="tool-dot"></div>Postman</div>
+    <div class="tool-item"><div class="tool-dot"></div>Obsidian / Cherrytree</div>
+    <div class="tool-item"><div class="tool-dot"></div>Social Engineer Toolkit</div>
+    <div class="tool-item"><div class="tool-dot"></div>enum4linux</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PLATFORMS -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-number">// 05</span>
+    <h2 class="section-title">Practice <span class="accent2">Platforms</span></h2>
+  </div>
+  <div class="platforms-grid">
+    <div class="platform-card">
+      <div class="platform-name">TryHackMe</div>
+      <div class="platform-desc">Structured learning paths built for beginners. Guided rooms with increasing difficulty across network pentesting, privilege escalation, and web hacking. Recommended for in-course and post-course practice.</div>
+    </div>
+    <div class="platform-card">
+      <div class="platform-name">HackTheBox</div>
+      <div class="platform-desc">Practical machine labs for real skill development. Starting Point machines are the recommended first step after course completion. Used for the real-world lab simulations in Module 8.</div>
+    </div>
+    <div class="platform-card">
+      <div class="platform-name">PortSwigger</div>
+      <div class="platform-desc">Web Security Academy. Free, world-class web application security labs. The primary hands-on platform for all Module 6 vulnerability sessions. Covers every OWASP category in structured lab format.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CERTIFICATION PATHWAY -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-number">// 06</span>
+    <h2 class="section-title">Certification <span class="accent">Pathway</span></h2>
+  </div>
+  <p style="font-size: 14px; color: var(--text-dim); max-width: 700px; margin-bottom: 32px; line-height: 1.8;">Upon completing Cybersecurity 101, students are prepared to pursue the following certifications in sequence. Each step builds directly on the last.</p>
+  <div class="cert-pathway">
+    <div class="cert-step">
+      <span class="cert-step-num">// Step 01</span>
+      <div class="cert-name">eJPT v2</div>
+      <div class="cert-body">INE / eLearnSecurity. Entry-level, 100% practical, 48-hour exam. Ideal first certification after this course.</div>
+      <span class="cert-level level-entry">Entry Level</span>
+    </div>
+    <div class="cert-step">
+      <span class="cert-step-num">// Step 02</span>
+      <div class="cert-name">PJPT</div>
+      <div class="cert-body">TCM Security. Practical Junior Penetration Tester. Focused on Active Directory internals and internal network pentesting.</div>
+      <span class="cert-level level-entry">Junior Level</span>
+    </div>
+    <div class="cert-step">
+      <span class="cert-step-num">// Step 03</span>
+      <div class="cert-name">CEH</div>
+      <div class="cert-body">EC-Council. Broader theory-based credential. Useful for compliance-oriented employers and enterprise hiring pipelines.</div>
+      <span class="cert-level level-mid">Intermediate</span>
+    </div>
+    <div class="cert-step">
+      <span class="cert-step-num">// Step 04</span>
+      <div class="cert-name">PNPT</div>
+      <div class="cert-body">TCM Security. Practical Network Penetration Tester. Real-world 5-day pentest exam with live report debrief.</div>
+      <span class="cert-level level-mid">Intermediate</span>
+    </div>
+    <div class="cert-step">
+      <span class="cert-step-num">// Step 05</span>
+      <div class="cert-name">OSCP</div>
+      <div class="cert-body">OffSec PEN-200. The gold standard for practical penetration testing. 24-hour hands-on exam. Opens senior-level roles.</div>
+      <span class="cert-level level-adv">Advanced</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-left">
+    CYBERSECURITY 101 &mdash; COURSE OUTLINE &mdash; 34 SESSIONS / 100 HOURS
+  </div>
+  <div class="footer-right">
+    ALIGNED WITH <span>eJPT v2</span> · <span>PJPT</span> · <span>OSCP PEN-200</span>
+  </div>
+</footer>
+
+<script>
+  function toggleModule(header) {
+    const module = header.closest('.module');
+    module.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
